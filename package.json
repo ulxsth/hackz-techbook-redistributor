@@ -1,21 +1,11 @@
 {
   "name": "hackz-techbook-redistributor",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "express-ejs-layouts": "^2.5.1",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
-  },
+  "module": "index.ts",
+  "type": "module",
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
