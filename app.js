@@ -3,9 +3,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const expressLayouts = require('express-ejs-layouts');
 
 const indexRouter = require('./routes/index');
-const expressLayouts = require('express-ejs-layouts');
 
 const app = express();
 
