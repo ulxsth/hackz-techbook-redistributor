@@ -9,6 +9,9 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "dev": "bun run index.ts"
+    "dev": "bun --watch index.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.44.4"
   }
 }
