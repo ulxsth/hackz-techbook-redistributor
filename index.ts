@@ -17,8 +17,14 @@ const server = Bun.serve({
 
     // GET /signin
     if (url.pathname === "/signin" && req.method === "GET") {
+      const redirectTo = `${url.origin}/signin/callback`;
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "discord"
+        provider: "discord",
+        options: {
+          queryParams: {
+            redirectTo: redirectTo
+          },
+        },
       });
 
       if (error) {
@@ -26,7 +32,13 @@ const server = Bun.serve({
       }
 
       const redirectUrl = data.url;
-      return Response.redirect(redirectUrl, 302);
+      return Response.redirect(redirectTo, 302);
+    }
+
+    // GET /signin/callback
+    if (url.pathname === "/signin/callback" && req.method === "GET") {
+      const session = await supabase.auth.getSession();
+      return new Response(JSON.stringify(session));
     }
 
     // GET /books
