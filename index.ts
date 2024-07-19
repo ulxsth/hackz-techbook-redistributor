@@ -37,8 +37,18 @@ const server = Bun.serve({
 
     // GET /signin/callback
     if (url.pathname === "/signin/callback" && req.method === "GET") {
-      const session = await supabase.auth.getSession();
-      return new Response(JSON.stringify(session));
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        return new Response(error.message, { status: 500 });
+      }
+
+      return new Response(JSON.stringify(data));
+    }
+
+    // GET /signout
+    if (url.pathname === "/signout" && req.method === "GET") {
+      supabase.auth.signOut();
+      return Response.redirect(url.origin, 302);
     }
 
     // GET /books
@@ -52,7 +62,7 @@ const server = Bun.serve({
     }
 
     // POST /books
-    if(url.pathname === "/books" && req.method === "POST") {
+    if (url.pathname === "/books" && req.method === "POST") {
       const body: postBookBody = await req.json();
       if (!body.isbn || !body.title || !body.userId) {
         return new Response("Invalid request body", { status: 400 });
