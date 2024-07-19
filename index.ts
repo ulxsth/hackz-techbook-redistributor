@@ -9,8 +9,24 @@ interface postBookBody {
 const server = Bun.serve({
   async fetch(req) {
     const url = new URL(req.url);
-    if (url.pathname === "/") {
+
+    // GET /
+    if (url.pathname === "/" && req.method === "GET") {
       return new Response("Hello World");
+    }
+
+    // GET /signin
+    if (url.pathname === "/signin" && req.method === "GET") {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "discord"
+      });
+
+      if (error) {
+        return new Response(error.message, { status: 500 });
+      }
+
+      const redirectUrl = data.url;
+      return Response.redirect(redirectUrl, 302);
     }
 
     // GET /books
