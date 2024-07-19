@@ -20,7 +20,7 @@ const server = Bun.serve({
       if (error) {
         return new Response(error.message, { status: 500 });
       }
-      
+
       return new Response(JSON.stringify(data));
     }
 
