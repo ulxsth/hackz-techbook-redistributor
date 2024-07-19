@@ -37,12 +37,24 @@ const server = Bun.serve({
 
     // GET /signin/callback
     if (url.pathname === "/signin/callback" && req.method === "GET") {
+      const { searchParams, origin } = new URL(req.url);
+      const code = searchParams.get("code");
+      const next = searchParams.get("next") ?? "/";
+
+      if (code) {
+        const {error} = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+          return new Response(error.message, { status: 500 });
+        }
+      }
+
       const { data, error } = await supabase.auth.getSession();
       if (error) {
         return new Response(error.message, { status: 500 });
       }
 
-      return new Response(JSON.stringify(data));
+      const session = data.session;
+      return new Response(JSON.stringify(session));
     }
 
     // GET /signout
