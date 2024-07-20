@@ -1,5 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
 import { router as authRouter } from './routes/auth'
+import { router as booksRouter } from './routes/books'
 import cookieParser from 'cookie-parser'
 import expressLayouts from 'express-ejs-layouts'
 import path from 'path'
@@ -17,6 +18,7 @@ app.set('views', path.join(__dirname, '../public/views'))
 
 // routers
 app.use('/auth', authRouter);
+app.use('/books', booksRouter);
 
 // root routes
 app.get('/', async (req: Request, res: Response) => {

@@ -1,0 +1,8 @@
+<h1>登録された本一覧</h1>
+
+<% for (const book of books) { %>
+  <div>
+    <h2><%= book.title %></h2>
+    <p><%= book.isbn %></p>
+  </div>
+<% } %>

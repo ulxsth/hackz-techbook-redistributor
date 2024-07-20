@@ -1,4 +1,5 @@
 import { createBrowserClient, parseCookieHeader, serializeCookieHeader } from "@supabase/ssr";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { Request, Response } from "express";
 import "dotenv/config";
 
@@ -12,7 +13,7 @@ if (!supabaseKey) {
   throw new Error("SUPABASE_KEY is not set");
 }
 
-export const createClient = (req: Request, res: Response) => {
+export const createClient = (req: Request, res: Response): SupabaseClient => {
   return createBrowserClient(supabaseUrl, supabaseKey, {
     auth: {
       detectSessionInUrl: true,
