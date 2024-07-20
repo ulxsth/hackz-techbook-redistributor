@@ -1,6 +1,8 @@
-import express, { Application, Request, Response } from 'express'
+import express, { Application, Request, Response, NextFunction } from 'express'
 import { router as authRouter } from './routes/auth'
 import cookieParser from 'cookie-parser'
+import expressLayouts from 'express-ejs-layouts'
+import path from 'path'
 
 const app: Application = express()
 const PORT = 3000
@@ -8,19 +10,28 @@ const PORT = 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use(expressLayouts)
+
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, '../public/views'))
 
 app.get('/', async (req: Request, res: Response) => {
   const userId = req.cookies.user_id;
   const accessToken = req.cookies.access_token;
   if(userId && accessToken) {
-    return res.status(200).send({
-      message: `Welcome, ${userId}`,
-    })
+    return res.status(200).render('index')
   }
 
-  return res.status(200).send({
-    message: 'Hello World!',
-  })
+  return res.status(200).render('index')
+})
+
+app.use((req, res, next) => {
+  const err = new Error('Not Found')
+  next(err)
+})
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.render('error', {err})
 })
 
 app.use('/auth', authRouter);
