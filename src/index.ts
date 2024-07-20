@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from 'express'
+import { router as authRouter } from './routes/auth'
 
 const app: Application = express()
 const PORT = 3000
@@ -11,6 +12,8 @@ app.get('/', async (_req: Request, res: Response) => {
     message: 'Hello World!',
   })
 })
+
+app.use('/auth', authRouter);
 
 try {
   app.listen(PORT, () => {
