@@ -50,5 +50,8 @@ router.get("/signin/callback", async (req: Request, res: Response) => {
 router.get("/signout", async (req: Request, res: Response) => {
   const supabase = createClient(req, res);
   await supabase.auth.signOut();
+  
+  res.clearCookie("user_id");
+  res.clearCookie("access_token");
   res.redirect("/");
 });
