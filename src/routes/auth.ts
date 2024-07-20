@@ -31,12 +31,20 @@ router.get("/signin/callback", async (req: Request, res: Response) => {
     return res.status(400).send("No code");
   }
 
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code as string);
+  var { data, error } = await supabase.auth.exchangeCodeForSession(code as string);
   if (error) {
     return res.status(500).send(error);
   }
 
-  res.send(data);
+  const userId = data.user?.id;
+  const accessToken = data.session?.access_token;
+  if (!userId || !accessToken) {
+    return res.status(500).send("No user ID or access token");
+  }
+
+  res.cookie("user_id", userId);
+  res.cookie("access_token", accessToken);
+  res.redirect("/");
 });
 
 router.get("/signout", async (req: Request, res: Response) => {
