@@ -15,6 +15,10 @@ app.use(expressLayouts)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '../public/views'))
 
+// routers
+app.use('/auth', authRouter);
+
+// root routes
 app.get('/', async (req: Request, res: Response) => {
   const userId = req.cookies.user_id;
   const accessToken = req.cookies.access_token;
@@ -33,8 +37,6 @@ app.use((req, res, next) => {
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.render('error', {err})
 })
-
-app.use('/auth', authRouter);
 
 try {
   app.listen(PORT, () => {
